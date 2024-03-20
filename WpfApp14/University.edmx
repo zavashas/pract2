@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище UniversityModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="ID_Course" />
+          </Key>
+          <Property Name="ID_Course" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DescriptionCourse" Type="text" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="ID_Student" />
+          </Key>
+          <Property Name="ID_Student" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentSurname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentMiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentsCourses">
+          <Key>
+            <PropertyRef Name="ID_StudentsCourses" />
+          </Key>
+          <Property Name="ID_StudentsCourses" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Student_ID" Type="int" Nullable="false" />
+          <Property Name="Course_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "University.dbo.StudentsCoursesView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="StudentsCoursesView">
+          <Key>
+            <PropertyRef Name="CourseTitle" />
+          </Key>
+          <Property Name="StudentFullName" Type="varchar" MaxLength="55" />
+          <Property Name="CourseTitle" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "University.dbo.StudentsCoursesView2" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="StudentsCoursesView2">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="CourseTitle" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="StudentFullName" Type="varchar" MaxLength="55" />
+          <Property Name="CourseTitle" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__StudentsC__Cours__3C69FB99">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID_Course" />
+            </Principal>
+            <Dependent Role="StudentsCourses">
+              <PropertyRef Name="Course_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentsC__Stude__3B75D760">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="ID_Student" />
+            </Principal>
+            <Dependent Role="StudentsCourses">
+              <PropertyRef Name="Student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище UniversityModelContainer">
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsCourses" EntityType="Self.StudentsCourses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsCoursesView" EntityType="Self.StudentsCoursesView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentsCoursesView].[StudentFullName] AS [StudentFullName], 
+    [StudentsCoursesView].[CourseTitle] AS [CourseTitle]
+    FROM [dbo].[StudentsCoursesView] AS [StudentsCoursesView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StudentsCoursesView2" EntityType="Self.StudentsCoursesView2" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentsCoursesView2].[ID] AS [ID], 
+    [StudentsCoursesView2].[StudentFullName] AS [StudentFullName], 
+    [StudentsCoursesView2].[CourseTitle] AS [CourseTitle]
+    FROM [dbo].[StudentsCoursesView2] AS [StudentsCoursesView2]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__StudentsC__Cours__3C69FB99" Association="Self.FK__StudentsC__Cours__3C69FB99">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentsC__Stude__3B75D760" Association="Self.FK__StudentsC__Stude__3B75D760">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UniversityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="ID_Course" />
+          </Key>
+          <Property Name="ID_Course" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DescriptionCourse" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Cours__3C69FB99" FromRole="Courses" ToRole="StudentsCourses" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="ID_Student" />
+          </Key>
+          <Property Name="ID_Student" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentMiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Stude__3B75D760" FromRole="Students" ToRole="StudentsCourses" />
+        </EntityType>
+        <EntityType Name="StudentsCourses">
+          <Key>
+            <PropertyRef Name="ID_StudentsCourses" />
+          </Key>
+          <Property Name="ID_StudentsCourses" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Student_ID" Type="Int32" Nullable="false" />
+          <Property Name="Course_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK__StudentsC__Cours__3C69FB99" FromRole="StudentsCourses" ToRole="Courses" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__StudentsC__Stude__3B75D760" FromRole="StudentsCourses" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="StudentsCoursesView">
+          <Key>
+            <PropertyRef Name="CourseTitle" />
+          </Key>
+          <Property Name="StudentFullName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="CourseTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentsCoursesView2">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="CourseTitle" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="StudentFullName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="CourseTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__StudentsC__Cours__3C69FB99">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID_Course" />
+            </Principal>
+            <Dependent Role="StudentsCourses">
+              <PropertyRef Name="Course_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentsC__Stude__3B75D760">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="ID_Student" />
+            </Principal>
+            <Dependent Role="StudentsCourses">
+              <PropertyRef Name="Student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UniversityEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Courses" />
+          <EntitySet Name="Students" EntityType="Self.Students" />
+          <EntitySet Name="StudentsCourses" EntityType="Self.StudentsCourses" />
+          <EntitySet Name="StudentsCoursesView" EntityType="Self.StudentsCoursesView" />
+          <EntitySet Name="StudentsCoursesView2" EntityType="Self.StudentsCoursesView2" />
+          <AssociationSet Name="FK__StudentsC__Cours__3C69FB99" Association="Self.FK__StudentsC__Cours__3C69FB99">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentsC__Stude__3B75D760" Association="Self.FK__StudentsC__Stude__3B75D760">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище UniversityModelContainer" CdmEntityContainer="UniversityEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="UniversityModel.Courses">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="ID_Course" ColumnName="ID_Course" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="DescriptionCourse" ColumnName="DescriptionCourse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="UniversityModel.Students">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="ID_Student" ColumnName="ID_Student" />
+                <ScalarProperty Name="StudentSurname" ColumnName="StudentSurname" />
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="StudentMiddleName" ColumnName="StudentMiddleName" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsCourses">
+            <EntityTypeMapping TypeName="UniversityModel.StudentsCourses">
+              <MappingFragment StoreEntitySet="StudentsCourses">
+                <ScalarProperty Name="ID_StudentsCourses" ColumnName="ID_StudentsCourses" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student_ID" />
+                <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsCoursesView">
+            <EntityTypeMapping TypeName="UniversityModel.StudentsCoursesView">
+              <MappingFragment StoreEntitySet="StudentsCoursesView">
+                <ScalarProperty Name="StudentFullName" ColumnName="StudentFullName" />
+                <ScalarProperty Name="CourseTitle" ColumnName="CourseTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsCoursesView2">
+            <EntityTypeMapping TypeName="UniversityModel.StudentsCoursesView2">
+              <MappingFragment StoreEntitySet="StudentsCoursesView2">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StudentFullName" ColumnName="StudentFullName" />
+                <ScalarProperty Name="CourseTitle" ColumnName="CourseTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

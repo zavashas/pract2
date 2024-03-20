@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UniversityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="ID_Course" />
+    </Key>
+    <Property Name="ID_Course" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DescriptionCourse" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Cours__3C69FB99" FromRole="Courses" ToRole="StudentsCourses" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="ID_Student" />
+    </Key>
+    <Property Name="ID_Student" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StudentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StudentMiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Age" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Stude__3B75D760" FromRole="Students" ToRole="StudentsCourses" />
+  </EntityType>
+  <EntityType Name="StudentsCourses">
+    <Key>
+      <PropertyRef Name="ID_StudentsCourses" />
+    </Key>
+    <Property Name="ID_StudentsCourses" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Student_ID" Type="Int32" Nullable="false" />
+    <Property Name="Course_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__StudentsC__Cours__3C69FB99" FromRole="StudentsCourses" ToRole="Courses" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__StudentsC__Stude__3B75D760" FromRole="StudentsCourses" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="StudentsCoursesView">
+    <Key>
+      <PropertyRef Name="CourseTitle" />
+    </Key>
+    <Property Name="StudentFullName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+    <Property Name="CourseTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentsCoursesView2">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="CourseTitle" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="StudentFullName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+    <Property Name="CourseTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__StudentsC__Cours__3C69FB99">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+    <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="ID_Course" />
+      </Principal>
+      <Dependent Role="StudentsCourses">
+        <PropertyRef Name="Course_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StudentsC__Stude__3B75D760">
+    <End Role="Students" Type="Self.Students" Multiplicity="1" />
+    <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="ID_Student" />
+      </Principal>
+      <Dependent Role="StudentsCourses">
+        <PropertyRef Name="Student_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="UniversityEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Courses" EntityType="Self.Courses" />
+    <EntitySet Name="Students" EntityType="Self.Students" />
+    <EntitySet Name="StudentsCourses" EntityType="Self.StudentsCourses" />
+    <EntitySet Name="StudentsCoursesView" EntityType="Self.StudentsCoursesView" />
+    <EntitySet Name="StudentsCoursesView2" EntityType="Self.StudentsCoursesView2" />
+    <AssociationSet Name="FK__StudentsC__Cours__3C69FB99" Association="Self.FK__StudentsC__Cours__3C69FB99">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StudentsC__Stude__3B75D760" Association="Self.FK__StudentsC__Stude__3B75D760">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
